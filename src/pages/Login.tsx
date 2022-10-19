@@ -24,7 +24,6 @@ import {
 
 import {
   InfoOutlineIcon,
-  UnlockIcon,
   AttachmentIcon,
   CheckIcon,
 } from "@chakra-ui/icons";
@@ -101,7 +100,7 @@ export default function Login() {
           direction={"column"}
           overflow="hidden"
           spacing={2}
-          py={12}
+          py={4}
           px={6}>
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} display="flex" w="full">
@@ -126,6 +125,7 @@ export default function Login() {
                   <Input
                     type="text"
                     value={matricula}
+                    focusBorderColor="green.400"
                     onChange={(e) => {
                       setMatricula(e.target.value);
                     }}
@@ -149,6 +149,7 @@ export default function Login() {
                   />
                   <Input
                     type="text"
+                    focusBorderColor="green.400"
                     value={turma}
                     onChange={(e) => setTurma(e.target.value)}
                   />
@@ -158,6 +159,7 @@ export default function Login() {
                 <Button
                   bg={"green.400"}
                   color={"white"}
+                  mt={5}
                   _hover={{
                     bg: "green.300",
                   }}

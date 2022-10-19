@@ -23,10 +23,11 @@ import React, { useState, useEffect } from "react";
 
 import mito from "../assets/mito.jpeg";
 import lula from "../assets/lula.jpg";
-import ciro from "../assets/ciro.jpg";
 import { AxiosError } from "axios";
+import api from "../services/api";
 import { useNavigate, useLocation } from "react-router-dom";
 import votacaoService from "../services/votacaoService";
+import registerService from "../services/registerService";
 
 export default function Votacao() {
   /* Modal */
@@ -52,25 +53,27 @@ export default function Votacao() {
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
-  /*   useEffect(() => {
+  useEffect(() => {
     api.get("/votacao").catch((err: AxiosError) => {
       if (err.response?.status === 401) {
         history("/");
       }
     });
-  }, [history]); */
+  }, [history]);
 
   async function votar() {
-    if ((candNum !== "22" && candNum !== '13')) {
-      setCandNum("0");
-    }
 
-    if (candNum === "") {
-      setCandNum("1");
+    let numFinal = "";
+    if (candNum !== "22" && candNum !== "13" && candNum) {
+      numFinal = "10";
+    } else if (!candNum) {
+      numFinal = "20"
+    } else {
+      numFinal = candNum;
     }
 
     await votacaoService
-      .votar({ candNum, matricula: state.state.matricula })
+      .votar({ candNum: numFinal, matricula: state.state.matricula })
       .then((res) => console.log(res))
       .catch((err: AxiosError) => {
         if (err.response?.status === 400) {
@@ -102,13 +105,7 @@ export default function Votacao() {
               bgSize={"cover"}
               bgPos="center"
               bgImage={
-                candNum === "22"
-                  ? mito
-                  : candNum === "13"
-                  ? lula
-                  : candNum === "12"
-                  ? ciro
-                  : ""
+                candNum === "22" ? mito : candNum === "13" ? lula : ""
               }></Box>
           )}
 
@@ -120,10 +117,6 @@ export default function Votacao() {
             ) : candNum === "13" ? (
               <Text fontWeight={"bold"} fontSize={"3xl"} color={"whitesmoke"}>
                 Luiz Inácio Lula da Silva
-              </Text>
-            ) : candNum === "12" ? (
-              <Text fontWeight={"bold"} fontSize={"3xl"} color={"whitesmoke"}>
-                Ciro Ferreira Gomes
               </Text>
             ) : (
               <Stack>
@@ -151,12 +144,6 @@ export default function Votacao() {
                 presidente do Brasil entre 1 de janeiro de 2003 e 1 de janeiro
                 de 2011.
               </Text>
-            ) : candNum === "12" ? (
-              <Text textAlign={"justify"} color={"whiteAlpha.700"}>
-                Ciro Ferreira Gomes GOMM é um advogado, professor universitário
-                e político brasileiro, filiado ao Partido Democrático
-                Trabalhista, do qual é vice-presidente.
-              </Text>
             ) : (
               <Text></Text>
             )}
@@ -176,12 +163,15 @@ export default function Votacao() {
           flexDirection="column"
           justifyContent={"space-between"}>
           <SimpleGrid columns={3} spacingY="6" spacingX={"5"}>
-
             {numbers.map((i) => {
-              return <Button
-                onClick={() => setCandNum(candNum ? candNum + `${i}` : `${i}`)}>
-                {i}
-              </Button>;
+              return (
+                <Button
+                  onClick={() =>
+                    setCandNum(candNum ? candNum + `${i}` : `${i}`)
+                  }>
+                  {i}
+                </Button>
+              );
             })}
 
             <Button
@@ -194,6 +184,7 @@ export default function Votacao() {
           <Input
             borderColor={candNum.length > 2 ? "red.300" : ""}
             type={"text"}
+            focusBorderColor="green.400"
             readOnly
             value={candNum}
             onChange={(e) => setCandNum(e.target.value)}
@@ -244,7 +235,13 @@ export default function Votacao() {
             {votou ? <Text>Você já votou!</Text> : <Text>Você votou!</Text>}
           </ModalBody>
           <ModalFooter display={"flex"} gap={4}>
-            <Button onClick={onClose}>Fechar</Button>
+            <Button
+              onClick={() => {
+                registerService.removeToken();
+                history("/");
+              }}>
+              Fechar
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

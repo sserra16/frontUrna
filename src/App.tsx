@@ -7,7 +7,9 @@ function App() {
     <VStack
       p={5}
       h="full"
-      backgroundImage={"https://wallpapercave.com/wp/wp2665743.jpg"}
+      backgroundImage={
+        "linear-gradient(to right top, #292929, #242424, #1f1f1f, #1b1b1b, #161616);"
+      }
       bgPos="top"
       w={"full"}
       bgSize={"cover"}>
