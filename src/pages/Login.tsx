@@ -20,15 +20,12 @@ import {
   useDisclosure,
   Text,
   InputGroup,
+  Select,
 } from "@chakra-ui/react";
 
-import {
-  InfoOutlineIcon,
-  AttachmentIcon,
-  CheckIcon,
-} from "@chakra-ui/icons";
+import { InfoOutlineIcon, AttachmentIcon, CheckIcon } from "@chakra-ui/icons";
 
-import { useEffect, useState } from "react";
+import { HtmlHTMLAttributes, useEffect, useState } from "react";
 
 import Logo from "../assets/logo.png";
 
@@ -62,6 +59,7 @@ export default function Login() {
   const [errorMat, setErrorMat] = useState(false);
 
   async function logar() {
+    
     await registerService
       .create({ matricula, senha: pass, turma })
       .then((response) => {
@@ -145,14 +143,24 @@ export default function Login() {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<InfoOutlineIcon color="gray.300" />}
+                    // children={<InfoOutlineIcon color="gray.300" />}
                   />
-                  <Input
+                  {/* <Input
                     type="text"
                     focusBorderColor="green.400"
                     value={turma}
+                  /> */}
+                  <Select
+                    id="turma"
+                    bg="transparent"
+                    value={turma}
+                    borderColor="green.500"
                     onChange={(e) => setTurma(e.target.value)}
-                  />
+                    color="white"
+                    placeholder="Selecione a sua turma">
+                    <option value={"2C2"}>2C2</option>
+                    <option value={"2D2"}>2D2</option>
+                  </Select>
                 </InputGroup>
               </FormControl>
               <Stack spacing={10}>
