@@ -153,6 +153,7 @@ export default function Login() {
                     bg="transparent"
                     value={turma}
                     borderColor="green.500"
+                    color={`white`}
                     onChange={(e) => setTurma(e.target.value)}
                     placeholder="Selecione a sua turma">
                     <option value={"2C2"}>2C2</option>
