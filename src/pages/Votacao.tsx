@@ -60,12 +60,11 @@ export default function Votacao() {
   }, [history]);
 
   async function votar() {
-
     let numFinal = "";
     if (candNum !== "22" && candNum !== "13" && candNum) {
       numFinal = "10";
     } else if (!candNum) {
-      numFinal = "20"
+      numFinal = "20";
     } else {
       numFinal = candNum;
     }
@@ -164,6 +163,8 @@ export default function Votacao() {
             {numbers.map((i) => {
               return (
                 <Button
+                  backdropBlur={"20px"}
+                  backdropFilter={"auto"}
                   onClick={() =>
                     setCandNum(candNum ? candNum + `${i}` : `${i}`)
                   }>
@@ -173,6 +174,8 @@ export default function Votacao() {
             })}
 
             <Button
+              backdropBlur={"20px"}
+              backdropFilter={"auto"}
               onClick={() => setCandNum(candNum ? candNum + "0" : "0")}
               gridColumn={2}>
               0
