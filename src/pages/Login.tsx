@@ -58,7 +58,6 @@ export default function Login() {
   const [errorMat, setErrorMat] = useState(false);
 
   async function logar() {
-    
     await registerService
       .create({ matricula, turma })
       .then((response) => {
@@ -103,7 +102,7 @@ export default function Login() {
             <Heading fontSize={"4xl"} display="flex" w="full">
               <Image alignSelf={"flex-start"} boxSize={12} src={Logo} />
               <Flex gap={3}>
-                <Text>Urna</Text> 
+                <Text>Urna</Text>
                 <Text display={"inline"} color={"green.300"}>
                   Cotemig
                 </Text>
@@ -155,7 +154,6 @@ export default function Login() {
                     value={turma}
                     borderColor="green.500"
                     onChange={(e) => setTurma(e.target.value)}
-                    color="white"
                     placeholder="Selecione a sua turma">
                     <option value={"2C2"}>2C2</option>
                     <option value={"2D2"}>2D2</option>
