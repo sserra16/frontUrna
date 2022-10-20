@@ -23,9 +23,9 @@ import {
   Select,
 } from "@chakra-ui/react";
 
-import { InfoOutlineIcon, AttachmentIcon, CheckIcon } from "@chakra-ui/icons";
+import { AttachmentIcon, CheckIcon } from "@chakra-ui/icons";
 
-import { HtmlHTMLAttributes, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import Logo from "../assets/logo.png";
 
@@ -53,7 +53,6 @@ export default function Login() {
   const history = useNavigate();
 
   const [matricula, setMatricula] = useState("");
-  const [pass, setPass] = useState("");
   const [turma, setTurma] = useState("");
 
   const [errorMat, setErrorMat] = useState(false);
@@ -61,7 +60,7 @@ export default function Login() {
   async function logar() {
     
     await registerService
-      .create({ matricula, senha: pass, turma })
+      .create({ matricula, turma })
       .then((response) => {
         console.log(response.data.usuario.matricula);
         registerService.setToken(response.data.token);
@@ -103,12 +102,12 @@ export default function Login() {
           <Stack align={"center"}>
             <Heading fontSize={"4xl"} display="flex" w="full">
               <Image alignSelf={"flex-start"} boxSize={12} src={Logo} />
-              <Box>
-                Urna{" "}
+              <Flex gap={3}>
+                <Text>Urna</Text> 
                 <Text display={"inline"} color={"green.300"}>
                   Cotemig
                 </Text>
-              </Box>
+              </Flex>
             </Heading>
           </Stack>
           <Box p={8}>

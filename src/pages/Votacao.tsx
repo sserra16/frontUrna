@@ -27,11 +27,9 @@ import { AxiosError } from "axios";
 import api from "../services/api";
 import { useNavigate, useLocation } from "react-router-dom";
 import votacaoService from "../services/votacaoService";
-import registerService from "../services/registerService";
 
 export default function Votacao() {
   /* Modal */
-
   const OverlayOne = () => (
     <ModalOverlay
       bg="none"
@@ -237,7 +235,6 @@ export default function Votacao() {
           <ModalFooter display={"flex"} gap={4}>
             <Button
               onClick={() => {
-                registerService.removeToken();
                 history("/");
               }}>
               Fechar
