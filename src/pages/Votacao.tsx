@@ -175,6 +175,8 @@ export default function Votacao() {
 
             <Button
               backdropBlur={"20px"}
+              color={"gray.100"}
+              _hover={{ opacity: 0.8 }}
               backdropFilter={"auto"}
               onClick={() => setCandNum(candNum ? candNum + "0" : "0")}
               gridColumn={2}>
@@ -207,7 +209,7 @@ export default function Votacao() {
               display="flex"
               alignItems="center"
               gap={1}
-              leftIcon={<CloseIcon boxSize={3} />}
+              leftIcon={<CloseIcon color={"white"} boxSize={3} />}
               onClick={() => setCandNum(candNum.slice(0, candNum.length - 1))}>
               <Text>Corrige</Text>
             </Button>
@@ -216,13 +218,13 @@ export default function Votacao() {
               _hover={{
                 bg: "green.500",
               }}
-              leftIcon={<CheckIcon boxSize={4} />}
+              leftIcon={<CheckIcon color={"white"} boxSize={4} />}
               onClick={async () => {
                 await votar();
                 setOverlay(<OverlayOne />);
                 onOpen();
               }}>
-              Confirma
+              <Text>Confirma</Text>
             </Button>
           </Flex>
         </Box>
