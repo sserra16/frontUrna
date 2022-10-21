@@ -15,10 +15,10 @@ class RegisterService {
     }
   };
 
-    removeToken = () => {
-      localStorage.removeItem("accessToken");
-      delete api.defaults.headers.common.Authorization;
-    };
+  removeToken = () => {
+    localStorage.removeItem("accessToken");
+    delete api.defaults.headers.common.Authorization;
+  };
 }
 
 const registerService = new RegisterService();

@@ -16,9 +16,15 @@ import {
   ModalContent,
   ModalHeader,
   ModalFooter,
+  Spinner,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { CloseIcon, CheckIcon } from "@chakra-ui/icons";
+import {
+  CloseIcon,
+  CheckIcon,
+  CheckCircleIcon,
+  InfoIcon,
+} from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 
 import mito from "../assets/mito.jpeg";
@@ -48,6 +54,7 @@ export default function Votacao() {
   const state = useLocation();
   const [candNum, setCandNum] = useState("");
   const [votou, setVotou] = useState(false);
+  const [load, setLoad] = useState(true);
 
   const numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
 
@@ -61,21 +68,21 @@ export default function Votacao() {
 
   async function votar() {
     let numFinal = "";
-    if (candNum !== "22" && candNum !== "13" && candNum) {
+
+    if (candNum !== "22" && candNum !== "13" && candNum !== "20") {
       numFinal = "10";
-    } else if (!candNum) {
-      numFinal = "20";
     } else {
       numFinal = candNum;
     }
 
     await votacaoService
       .votar({ candNum: numFinal, matricula: state.state.matricula })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setLoad(true);
+      })
       .catch((err: AxiosError) => {
-        if (err.response?.status === 400) {
-          setVotou(true);
-        }
+        console.log(err);
       });
   }
 
@@ -185,7 +192,7 @@ export default function Votacao() {
           </SimpleGrid>
 
           <Input
-            borderColor={candNum.length > 2 ? "red.300" : ""}
+            borderColor={candNum.length !== 2 ? "red.300" : "green.400"}
             type={"text"}
             focusBorderColor="green.400"
             readOnly
@@ -198,7 +205,11 @@ export default function Votacao() {
               leftIcon={<Icon />}
               _hover={{ bg: "whiteAlpha.700" }}
               bg={"white"}
-              textColor={"black"}>
+              textColor={"black"}
+              onClick={() => {
+                setCandNum("20");
+                onOpen();
+              }}>
               Branco
             </Button>
             <Button
@@ -219,8 +230,7 @@ export default function Votacao() {
                 bg: "green.500",
               }}
               leftIcon={<CheckIcon color={"white"} boxSize={4} />}
-              onClick={async () => {
-                await votar();
+              onClick={() => {
                 setOverlay(<OverlayOne />);
                 onOpen();
               }}>
@@ -231,20 +241,100 @@ export default function Votacao() {
       </Flex>
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
-        <ModalContent>
-          <ModalHeader></ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {votou ? <Text>Você já votou!</Text> : <Text>Você votou!</Text>}
-          </ModalBody>
-          <ModalFooter display={"flex"} gap={4}>
-            <Button
-              onClick={() => {
-                history("/");
-              }}>
-              Fechar
-            </Button>
-          </ModalFooter>
+        <ModalContent p={!load ? "14" : ""} alignItems={!load ? "center" : ""} justifyContent={!load ? "center": ""}>
+          {!votou ? (
+            <>
+              {" "}
+              <ModalHeader>
+                {!votou ? (
+                  <InfoIcon rounded={"full"} w={6} h={6} />
+                ) : (
+                  <CheckCircleIcon
+                    backgroundColor={"green.400"}
+                    rounded={"full"}
+                    w={6}
+                    h={6}
+                  />
+                )}
+              </ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Text>
+                  {candNum === "13"
+                    ? "Deseja votar no Lula?"
+                    : candNum === "22"
+                    ? "Deseja votar no Bolsonaro?"
+                    : candNum !== "13" &&
+                      candNum !== "22" &&
+                      candNum !== "20" &&
+                      candNum
+                    ? "Deseja votar Nulo?"
+                    : candNum === "20"
+                    ? "Deseja votar em Branco?"
+                    : "Digite um número ou clique no botão de votar em branco."}
+                </Text>
+              </ModalBody>
+              <ModalFooter display={"flex"} gap={4}>
+                {!candNum ? (
+                  <Button
+                    onClick={() => {
+                      onClose();
+                    }}>
+                    Voltar
+                  </Button>
+                ) : (
+                  <>
+                    <Button
+                      backgroundColor={"orange.400"}
+                      onClick={() => {
+                        onClose();
+                      }}>
+                      Não
+                    </Button>
+                    <Button
+                      backgroundColor={"green.400"}
+                      onClick={async () => {
+                        setVotou(true);
+                        setLoad(false);
+                        await votar();
+                      }}>
+                      Sim
+                    </Button>
+                  </>
+                )}
+              </ModalFooter>
+            </>
+          ) : (
+            <>
+              {load ? (
+                <>
+                  <ModalHeader></ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <Text display={"flex"} gap={3} alignItems={"center"}>
+                      Você votou!
+                    </Text>
+                  </ModalBody>
+                  <ModalFooter display={"flex"} gap={4}>
+                    <Button
+                      onClick={() => {
+                        history("/");
+                      }}>
+                      Fechar
+                    </Button>
+                  </ModalFooter>{" "}
+                </>
+              ) : (
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="green.400"
+                  size="xl"
+                />
+              )}
+            </>
+          )}
         </ModalContent>
       </Modal>
     </>

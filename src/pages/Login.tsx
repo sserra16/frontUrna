@@ -20,6 +20,7 @@ import {
   useDisclosure,
   Text,
   InputGroup,
+  Spinner,
   Select,
 } from "@chakra-ui/react";
 
@@ -34,6 +35,8 @@ import registerService from "../services/registerService";
 
 export default function Login() {
   useEffect(() => registerService.removeToken(), []);
+
+  const [load, setLoad] = useState(true);
 
   /* MODAL */
   const OverlayOne = () => (
@@ -58,10 +61,10 @@ export default function Login() {
   const [errorMat, setErrorMat] = useState(false);
 
   async function logar() {
+    setLoad(false);
     await registerService
       .create({ matricula, turma })
       .then((response) => {
-        console.log(response.data.usuario.matricula);
         registerService.setToken(response.data.token);
         history("/Votacao", {
           state: { matricula: response.data.usuario.matricula },
@@ -82,7 +85,6 @@ export default function Login() {
         minH={"100vh"}
         alignItems={"center"}
         justify={"center"}
-        /* bg={useColorModeValue("gray.50", "gray.800")} */
       >
         <Stack
           boxShadow={"lg"}
@@ -119,9 +121,10 @@ export default function Login() {
                     children={<AttachmentIcon color="gray.300" />}
                   />
                   <Input
-                    type="text"
+                    type="number"
                     value={matricula}
-                    focusBorderColor="green.400"
+                    
+                    focusBorderColor={matricula.length !== 8 ? "red.400" : "green.400"}
                     onChange={(e) => {
                       setMatricula(e.target.value);
                     }}
@@ -141,23 +144,27 @@ export default function Login() {
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    // children={<InfoOutlineIcon color="gray.300" />}
                   />
-                  {/* <Input
-                    type="text"
-                    focusBorderColor="green.400"
-                    value={turma}
-                  /> */}
                   <Select
                     id="turma"
                     bg="transparent"
                     value={turma}
-                    borderColor="green.500"
                     color={`white`}
+                    focusBorderColor={"green.400"}
                     onChange={(e) => setTurma(e.target.value)}
                     placeholder="Selecione a sua turma">
-                    <option value={"2C2"}>2C2</option>
+                    <option value={"2C2"}>1A2</option>
+                    <option value={"2C2"}>1B2</option>
+                    <option value={"2C2"}>1C2</option>
+                    <option value={"2C2"}>1D2</option>
+                    <option value={"2D2"}>1E2</option>
+                    <option value={"2D2"}>2A2</option>
+                    <option value={"2D2"}>2B2</option>
                     <option value={"2D2"}>2D2</option>
+                    <option value={"2D2"}>2C2</option>
+                    <option value={"2D2"}>3A2</option>
+                    <option value={"2D2"}>3B2</option>
+                    <option value={"2D2"}>3C2</option>
                   </Select>
                 </InputGroup>
               </FormControl>
@@ -166,6 +173,7 @@ export default function Login() {
                   bg={"green.400"}
                   color={"white"}
                   mt={5}
+                  disabled={matricula.length !== 8 ? true : false}
                   _hover={{
                     bg: "green.300",
                   }}
@@ -177,29 +185,41 @@ export default function Login() {
                 </Button>
                 <Modal isCentered isOpen={isOpen} onClose={onClose}>
                   {overlay}
-                  <ModalContent>
-                    <ModalHeader>Confirmar</ModalHeader>
-                    <ModalCloseButton />
-                    <ModalBody>
-                      <Text>Deseja confirmar a matrícula?</Text>
-                      <Text fontWeight={"bold"}>{matricula}</Text>
-                    </ModalBody>
-                    <ModalFooter display={"flex"} gap={4}>
-                      <Button
-                        bg={"green.400"}
-                        color={"white"}
-                        _hover={{
-                          bg: "green.300",
-                        }}
-                        onClick={logar}
-                        display={"flex"}
-                        alignItems="center"
-                        gap={2}>
-                        <CheckIcon />
-                        Sim
-                      </Button>
-                      <Button onClick={onClose}>Fechar</Button>
-                    </ModalFooter>
+                  <ModalContent p={!load ? "14" : ""} alignItems={!load ? "center" : ""} justifyContent={!load ? "center": ""}>
+                    {!load ? (
+                      <Spinner
+                        thickness="4px"
+                        speed="0.65s"
+                        emptyColor="gray.200"
+                        color="green.400"
+                        size="xl"
+                      />
+                    ) : (
+                      <>
+                        <ModalHeader>Confirmar</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                          <Text>Deseja confirmar a matrícula?</Text>
+                          <Text fontWeight={"bold"}>{matricula}</Text>
+                        </ModalBody>
+                        <ModalFooter display={"flex"} gap={4}>
+                          <Button
+                            bg={"green.400"}
+                            color={"white"}
+                            _hover={{
+                              bg: "green.300",
+                            }}
+                            onClick={logar}
+                            display={"flex"}
+                            alignItems="center"
+                            gap={2}>
+                            <CheckIcon />
+                            Sim
+                          </Button>
+                          <Button onClick={onClose}>Fechar</Button>
+                        </ModalFooter>
+                      </>
+                    )}
                   </ModalContent>
                 </Modal>
               </Stack>
