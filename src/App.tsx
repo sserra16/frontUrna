@@ -1,4 +1,4 @@
-import { Flex, VStack } from "@chakra-ui/react";
+import { Flex, VStack, Text } from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import Routes from "./routes";
 import "./global.css";
@@ -18,6 +18,18 @@ function App() {
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
+        <Flex
+          alignItems={"center"}
+          justifyContent="center"
+          position={"fixed"}
+          bottom={0}
+          w={"full"}
+          roundedTop="xl"
+          bg="blackAlpha.500"
+          h={"10"}
+          backdropBlur="10px">
+            <Text fontSize={12}>Urna eletrônica feita por Samuel Serra 2D2, Floresta</Text>
+          </Flex>
       </Flex>
     </VStack>
   );

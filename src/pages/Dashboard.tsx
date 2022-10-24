@@ -1,16 +1,21 @@
-import { Flex, Stack } from "@chakra-ui/react";
+import { Flex, Spinner, Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import votacaoService from "../services/votacaoService";
 import VotosPorCandidato from "../models/votosPorCandidato";
+import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
+  const [load, setLoad] = useState(true);
   const [votos, setVotos] = useState<VotosPorCandidato[]>();
+  const history = useNavigate();
 
   function getVotos() {
+    setLoad(false);
     votacaoService
       .getVotos()
       .then((response) => {
+        setLoad(true);
         setVotos(response.data);
       })
       .catch((error) => {
@@ -19,11 +24,14 @@ export default function Dashboard() {
   }
 
   useEffect(() => {
+    if (!localStorage.getItem("admin")) {
+      history("/adminlogin");
+    }
     getVotos();
     setTimeout(() => {
       getVotos();
     }, 30000);
-  }, []);
+  }, [history]);
 
   let votos22 = 0;
   let votos13 = 0;
@@ -61,25 +69,35 @@ export default function Dashboard() {
         spacing={2}
         py={4}
         px={6}>
-        <Chart
-          options={{
-            legend: {
-              labels: {
-                colors: ["#FFFFFF"],
+        {!load ? (
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="green.400"
+            size="xl"
+          />
+        ) : (
+          <Chart
+            options={{
+              legend: {
+                labels: {
+                  colors: ["#FFFFFF"],
+                },
               },
-            },
-            chart: { animations: { easing: "easeinout", enabled: true } },
-            dataLabels: {
-              style: {
-                colors: ["#FFFFFF"],
+              chart: { animations: { easing: "easeinout", enabled: true } },
+              dataLabels: {
+                style: {
+                  colors: ["#FFFFFF"],
+                },
               },
-            },
-            colors: ["#44EB36", "#D74141", "#272727", "#A9A9A9"],
-            labels: ["Bolsonaro", "Lula", "Nulo", "Branco"],
-          }}
-          series={[votos22, votos13, votos10, votos20]}
-          width={"400px"}
-          type={"pie"}></Chart>
+              colors: ["#44EB36", "#D74141", "#272727", "#A9A9A9"],
+              labels: ["Bolsonaro", "Lula", "Nulo", "Branco"],
+            }}
+            series={[votos22, votos13, votos10, votos20]}
+            width={"400px"}
+            type={"pie"}></Chart>
+        )}
       </Stack>
     </Flex>
   );
