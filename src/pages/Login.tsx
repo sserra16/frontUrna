@@ -73,6 +73,7 @@ export default function Login() {
       .catch((error) => {
         console.log(error.response);
         if (error.response.data === "Esta matrícula já foi usada") {
+          setLoad(false);
           onClose();
           setErrorMat(true);
         }

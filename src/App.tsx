@@ -9,7 +9,7 @@ function App() {
       p={5}
       h="full"
       backgroundImage={
-        "linear-gradient(to right top, #292929, #242424, #1f1f1f, #1b1b1b, #161616);"
+        "linear-gradient(to right top, #051937, #002039, #002531, #002821, #00290d);"
       }
       bgPos="top"
       w={"full"}
