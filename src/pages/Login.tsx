@@ -82,11 +82,7 @@ export default function Login() {
 
   return (
     <>
-      <Flex
-        minH={"100vh"}
-        alignItems={"center"}
-        justify={"center"}
-      >
+      <Flex minH={"100vh"} alignItems={"center"} justify={"center"}>
         <Stack
           boxShadow={"lg"}
           backdropFilter={"auto"}
@@ -123,9 +119,11 @@ export default function Login() {
                   />
                   <Input
                     type="number"
+                    required
                     value={matricula}
-                    
-                    focusBorderColor={matricula.length !== 8 ? "red.400" : "green.400"}
+                    focusBorderColor={
+                      matricula.length !== 8 ? "red.400" : "green.400"
+                    }
                     onChange={(e) => {
                       setMatricula(e.target.value);
                     }}
@@ -143,14 +141,12 @@ export default function Login() {
               <FormControl id="turma">
                 <FormLabel>Digite a turma </FormLabel>
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                  />
+                  <InputLeftElement pointerEvents="none" />
                   <Select
+                    required
                     id="turma"
-                    bg="transparent"
                     value={turma}
-                    color={`white`}
+                    color={"white"}
                     focusBorderColor={"green.400"}
                     onChange={(e) => setTurma(e.target.value)}
                     placeholder="Selecione a sua turma">
@@ -186,7 +182,12 @@ export default function Login() {
                 </Button>
                 <Modal isCentered isOpen={isOpen} onClose={onClose}>
                   {overlay}
-                  <ModalContent p={!load ? "14" : ""} alignItems={!load ? "center" : ""} justifyContent={!load ? "center": ""}>
+                  <ModalContent
+                    p={!load ? "14" : ""}
+                    backgroundColor={"#3F3D42"}
+                    color={"white"}
+                    alignItems={!load ? "center" : ""}
+                    justifyContent={!load ? "center" : ""}>
                     {!load ? (
                       <Spinner
                         thickness="4px"
@@ -208,7 +209,7 @@ export default function Login() {
                             bg={"green.400"}
                             color={"white"}
                             _hover={{
-                              bg: "green.300",
+                              bg: "green.500",
                             }}
                             onClick={logar}
                             display={"flex"}
@@ -217,7 +218,7 @@ export default function Login() {
                             <CheckIcon />
                             Sim
                           </Button>
-                          <Button onClick={onClose}>Fechar</Button>
+                          <Button backgroundColor={"orange.400"} _hover={{ backgroundColor: "orange.500" }} onClick={onClose}>Fechar</Button>
                         </ModalFooter>
                       </>
                     )}

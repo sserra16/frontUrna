@@ -171,6 +171,9 @@ export default function Votacao() {
               return (
                 <Button
                   backdropBlur={"20px"}
+                  backgroundColor={"blackAlpha.500"}
+                  _hover={{ backgroundColor: "blackAlpha.300" }}
+                  color={"white"}
                   backdropFilter={"auto"}
                   onClick={() =>
                     setCandNum(candNum ? candNum + `${i}` : `${i}`)
@@ -182,8 +185,9 @@ export default function Votacao() {
 
             <Button
               backdropBlur={"20px"}
-              color={"gray.100"}
-              _hover={{ opacity: 0.8 }}
+              backgroundColor={"blackAlpha.500"}
+              _hover={{ backgroundColor: "blackAlpha.300" }}
+              color={"white"}
               backdropFilter={"auto"}
               onClick={() => setCandNum(candNum ? candNum + "0" : "0")}
               gridColumn={2}>
@@ -241,7 +245,12 @@ export default function Votacao() {
       </Flex>
       <Modal isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
-        <ModalContent p={!load ? "14" : ""} alignItems={!load ? "center" : ""} justifyContent={!load ? "center": ""}>
+        <ModalContent
+          backgroundColor={"#3F3D42"}
+          color={"white"}
+          p={!load ? "14" : ""}
+          alignItems={!load ? "center" : ""}
+          justifyContent={!load ? "center" : ""}>
           {!votou ? (
             <>
               {" "}
@@ -277,6 +286,8 @@ export default function Votacao() {
               <ModalFooter display={"flex"} gap={4}>
                 {!candNum ? (
                   <Button
+                  backgroundColor={"orange.400"}
+                  _hover={{ backgroundColor: "orange.500" }}
                     onClick={() => {
                       onClose();
                     }}>
@@ -286,6 +297,7 @@ export default function Votacao() {
                   <>
                     <Button
                       backgroundColor={"orange.400"}
+                      _hover={{ backgroundColor: "orange.500" }}
                       onClick={() => {
                         onClose();
                       }}>
@@ -293,6 +305,7 @@ export default function Votacao() {
                     </Button>
                     <Button
                       backgroundColor={"green.400"}
+                      _hover={{ backgroundColor: "green.500" }}
                       onClick={async () => {
                         setVotou(true);
                         setLoad(false);

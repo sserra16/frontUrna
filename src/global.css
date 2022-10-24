@@ -1,3 +1,7 @@
 p, label, input {
   color: white!important;
 }
+
+option {
+  background-color: #3F3D42!important;
+}
