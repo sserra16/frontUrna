@@ -3,8 +3,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL: "https://localhost:5001/api",
   headers: {
-    "content-type": "application/json",
-    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Origin": "https://localhost:5001/api/register",
   },
 });
 
